@@ -1,0 +1,30 @@
+# ─── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+*.pyc
+
+# ─── Ambiente e Credenciais ──────────────────────────────────────────────────
+.env                    # Credenciais reais (API Key, host)
+.venv/
+venv/
+env/
+
+# ─── Artefatos Gerados pelo Script ───────────────────────────────────────────
+inventario/             # Relatórios Markdown e CSV gerados
+
+# ─── IDE / Editor ────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.clinerules

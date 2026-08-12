@@ -1,0 +1,744 @@
+# 4. Proxying any APIs within FMG JSON API
+
+## 4.1. Security
+
+*   TODO
+
+> *   Find the Internal Reference…
+> 
+> 
+> The resource need to be in file `/usr/local/webclient/config/fos_json_api.json` or `/usr/local/webclient/config_json_api_named.json`?
+
+## 4.2. Replacing `sys/proxy/json`
+
+Caught in #0579366.
+
+To proxy FAZ API in FMG JSON API:
+
+**REQUEST:**
+
+```
+{
+ "id": "2333c69e-bf19-11e5-924a-000c2986047b",
+ "jsonrpc": "2.0",
+ "method": "add",
+ "root":"deployment/proxy/adom/root/FAZVM64",
+ "params": [
+ {
+ "apiver": 3,
+ "case-sensitive": false,
+ "device": [
+ {
+ "devid": "All_FortiGate"
+ }
+ ],
+ "filter": "",
+ "limit": 10,
+ "sort-by": [
+ {
+ "field": "sessions",
+ "order": "desc"
+ }
+ ],
+ "time-range": {
+ "end": "2019-07-17 10:00",
+ "start": "2019-07-17 09:00"
+ },
+ "url": "fortiview/adom/root/top-sources/run"
+ }
+ ]
+}
+```
+
+## 4.3. How to encapsulate FOS REST API call within FMG JSON RPC API?
+
+The FMG JSON RPC API url is:
+
+/sys/proxy/json
+
+But let’s have a look first at a FMG debug output when from the FMG GUI, we try to get the kernel routes from a managed devices. The following FMG CLI commands:
+
+```
+diagnose debug service sys 255
+diagnose debug timestamp enable
+diagnose debug enable
+```
+
+will expose this debug output:
+
+```
+{
+ "client": "gui json:17054",
+ "id": "0b346cc9-4576-4fc1-8f1e-1ae8e22c6e21",
+ "keep_session_idle": 1,
+ "method": "exec",
+ "params": [
+ {
+ "data": {
+ "action": "get",
+ "resource": "/api/v2/monitor/router/ipv4/select?&global=1&count=-1",
+ "target": [
+ "adom/adom_dut/device/fgt_dut1"
+ ]
+ },
+ "target start": 1,
+ "url": "sys/proxy/json"
+ }
+ ],
+ "session": 27540
+}
+```
+
+We can observe that:
+
+*   The `action` attribute is to indicate the FOS REST API HTTP method
+
+*   The `resource` attribute is to indicate the main URI (along with the query string)
+
+*   The `target` attribute is to indicate the managed devices.
+
+The `target` attribute could have multiple forms:
+
+    *   For one device:
+
+```
+"target": [
+ "adom/adom_dut/device/fgt_dut1"
+] 
+    *   For multiple devices:
+
+"target": [
+ "adom/adom_dut/device/fgt_dut1",
+ "adom/adom_dut/device/fgt_dut2"
+] 
+    *   For one device group:
+
+"target": [
+ "adom/adom_dut/group/emea_devices"
+] Note
+```
+
+It means the FOS REST API call will be automatically sent to all managed devices belonging to device group `emea_devices`.
+
+To be used with caution since It could be a large number of devices.
+
+But It shows how simple it is when you need to collect something from multiple devices, it is not required to poll each devices individually. Note
+
+We can use the special default device group `All_FortiGate` to target all managed devices for the specified ADOM. See the examples below. 
+    *   For multiple device groups:
+
+```
+"target": [
+ "adom/adom_dut/group/emea_devices",
+ "adom/adom_dut/group/apac_devices"
+] 
+    *   For multiple devices and device groups:
+
+"target": [
+ "adom/adom_dut/group/emea_devices",
+ "adom/adom_dut/group/apac_devices",
+ "adom/adom_dut/device/fgt_dut1",
+ "adom/adom_dut/device/fgt_dut2"
+] Note
+```
+
+FMG will optimize the list of target: if `fgt_dut1` belongs to device group `emea_devices`, only one request will be generated; not two. 
+    *   For all devices in ADOM `foobar`:
+
+```
+"target": [
+ "/adom/foobar/group/All_FortiGate"
+] 
+    *   Cross ADOM request: for all devices in ADOM `foobar` and `barfoo`:
+```
+
+> **Hint:**
+
+        *   Yes! a single API call will be somehow targeting managed devices in different ADOMs
+
+```
+"target": [
+ "/adom/foobar/group/All_FortiGate",
+ "/adom/barfoo/group/All_FortiGate"
+]
+```
+
+    *   We can also target devices without mentioning the ADOM information:
+
+```
+"target": [
+ "/device/device_001",
+ "/device/device_002"
+] 
+    *   It works for device groups too! For instance, this one will target all devices managed by FortiManager, whatever the ADOMs:
+
+"target": [
+ "/group/All_FortiGate"
+] 
+    *   You can also specify the target using the device OID:
+
+"target": [
+ "dev_oid/1111"
+] 
+```
+
+FNDN page for FMG JSON RPC API URL `/sys/proxy/json` is also exposing another attribute:
+
+*   The `payload` attribute wich is to set the data the we would pass in the HTTP body of our FOS REST API call (for POST or PUT HTTP method for instance).
+
+With this in mind, we can now easily convert any FOS REST API calls to a FOS REST API call encapsulated in FMG JSON RPC API.
+
+Recentely (#0689396) FMG exposed a new attribute:
+
+*   The `timeout` option to avoid waiting the complete timeout:
+
+```
+"action": "get",
+"resource": "/api/v2/monitor/virtual-wan/members?global=1",
+"target": ["adom/FPC-ADOM-D/group/All_FortiGate"],
+"timeout": 10 
+When omitted, default timeout is 60 seconds.
+```
+
+Maximum value is 28800 seconds.
+
+### 4.3.1. Add a new firewall address
+
+To add a new firewall address `host_001` in device `dut_fgt3` and VDOM `vd_001`:
+
+**REQUEST:**
+
+```
+{
+ "id": 1,
+ "jsonrpc": "1.0",
+ "method": "exec",
+ "params": [
+ {
+ "data": {
+ "action": "post",
+ "payload": {
+ "name": "host_001",
+ "subnet": "10.0.0.1/32"
+ },
+ "resource": "/api/v2/cmdb/firewall/address?vdom=vd_001",
+ "target": [
+ "adom/adom_dut/device/fgt_dut3"
+ ]
+ },
+ "url": "/sys/proxy/json"
+ }
+ ],
+ "session": "CudTWpfYXUDaEXLcri+EhokgysjqLFtTK2InWxr/AEREIql5buIuTpgDmbNZUvZaSCeLi1DO85t8nF6pUNKr8Q==",
+ "verbose": 1
+}
+```
+
+> **Note:**
+
+We shouldn’t create objects directly in the managed FortiGate devices. This is something FortiManager is doing very well already :-).
+
+But this example shows that you can also perform some provisioning operations.
+
+**RESPONSE:**
+
+```
+{
+  "id": 1,
+  "result": [
+    {
+      "data": [
+        {
+          "response": {
+            "build": 1803,
+            "http_method": "POST",
+            "http_status": 200,
+            "mkey": "host_001",
+            "name": "address",
+            "old_revision": "7d4cf25c6f5d3d6e1db497b4fcaed47c",
+            "path": "firewall",
+            "revision": "926d4f9c1148cf281b99bd9d87adafb6",
+            "revision_changed": true,
+            "serial": "FGVMULREDACTED68",
+            "status": "success",
+            "vdom": "vd_001",
+            "version": "v6.4.4"
+         },
+          "status": {
+            "code": 0,
+            "message": "OK"
+          },
+          "target": "fgt_dut3"
+        }
+      ],
+      "status": {
+        "code": 0,
+        "message": "OK"
+      },
+      "url": "/sys/proxy/json"
+    }
+  ]
+}
+```
+
+Same example this time using the special default device group `All_FortiGate`. It means we’re able to create the same object on multiple managed FortiGate by sending a single request to the FortiManager!
+
+**REQUEST:**
+
+```
+{
+ "id": 1,
+ "jsonrpc": "1.0",
+ "method": "exec",
+ "params": [
+ {
+ "data": {
+ "action": "post",
+ "payload": {
+ "name": "host_111",
+ "subnet": "10.0.0.111/32"
+ },
+ "resource": "/api/v2/cmdb/firewall/address?vdom=root",
+ "target": [
+ "adom/adom_dut/group/All_FortiGate"
+ ]
+ },
+ "url": "/sys/proxy/json"
+ }
+ ],
+ "session": "5fLb+Zd15gc3vczurXt+WEWtulTcMoWf/1KV0IZshFXDwJrZ+P52M3JuVOitxhpwPOmLH/Luer9K/BdUTg/xkA==",
+ "verbose": 1
+}
+```
+
+**RESPONSE:**
+
+```
+{
+ "id": 1,
+ "result": [
+ {
+ "data": [
+ {
+ "response": {
+ "build": 1803,
+ "http_method": "POST",
+ "http_status": 200,
+ "mkey": "host_111",
+ "name": "address",
+ "old_revision": "d9f6a63630566b0614d9c07dbb2d827d",
+ "path": "firewall",
+ "revision": "cae094c858c3209389351cc5cb5b1250",
+ "revision_changed": true,
+ "serial": "FGVMULREDACTED09",
+ "status": "success",
+ "vdom": "root",
+ "version": "v6.4.4"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt_dut1"
+ },
+ {
+ "response": {
+ "build": 1803,
+ "http_method": "POST",
+ "http_status": 200,
+ "mkey": "host_111",
+ "name": "address",
+ "old_revision": "96ff190e287105f12b5de346674794c5",
+ "path": "firewall",
+ "revision": "934d3884dec21ef732e2eea3ba5dbedd",
+ "revision_changed": true,
+ "serial": "FGVMULREDACTED81",
+ "status": "success",
+ "vdom": "root",
+ "version": "v6.4.4"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt_dut2"
+ },
+ {
+ "response": {
+ "build": 1803,
+ "http_method": "POST",
+ "http_status": 200,
+ "mkey": "host_111",
+ "name": "address",
+ "old_revision": "147220be553b6c71f8b3201d2188521a",
+ "path": "firewall",
+ "revision": "ee124f04143debb78ab5f0b8c0d42728",
+ "revision_changed": true,
+ "serial": "FGVMULREDACTED68",
+ "status": "success",
+ "vdom": "root",
+ "version": "v6.4.4"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt_dut3"
+ }
+ ],
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "url": "/sys/proxy/json"
+ }
+ ]
+}
+```
+
+### 4.3.2. To get list of banned users
+
+To get list of banned users from `root` VDOMs of all managed FortiGates in ADOM `adom_dut`:
+
+**REQUEST:**
+
+```
+{
+ "id": 1,
+ "jsonrpc": "1.0",
+ "method": "exec",
+ "params": [
+ {
+ "data": {
+ "action": "get",
+ "resource": "/api/v2/monitor/user/banned?vdom=root",
+ "target": [
+ "adom/adom_dut/group/All_FortiGate"
+ ]
+ },
+ "url": "/sys/proxy/json"
+ }
+ ],
+ "session": "yWaJOx+dMwqIikWJEVvGza3ErXLfhoOejBgh6bC9nIZI9eHBuT0wHLYjPM5a26lwKbFIjbe+cvBOpE1m2cJbpQ==",
+ "verbose": 1
+}
+```
+
+**RESPONSE:**
+
+```
+{
+ "id": 1,
+ "result": [
+ {
+ "data": [
+ {
+ "response": {
+ "build": 1803,
+ "http_method": "GET",
+ "name": "banned",
+ "path": "user",
+ "results": [],
+ "serial": "FGVMULREDACTED68",
+ "status": "success",
+ "vdom": "root",
+ "version": "v6.4.4"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt_dut3"
+ },
+ {
+ "response": {
+ "build": 1803,
+ "http_method": "GET",
+ "name": "banned",
+ "path": "user",
+ "results": [],
+ "serial": "FGVMULREDACTED81",
+ "status": "success",
+ "vdom": "root",
+ "version": "v6.4.4"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt_dut2"
+ },
+ {
+ "response": {
+ "build": 1803,
+ "http_method": "GET",
+ "name": "banned",
+ "path": "user",
+ "results": [],
+ "serial": "FGVMULREDACTED09",
+ "status": "success",
+ "vdom": "root",
+ "version": "v6.4.4"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt_dut1"
+ }
+ ],
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "url": "/sys/proxy/json"
+ }
+ ]
+}
+```
+
+> **Note:**
+
+We don’t have any banned users. This is why the `results` array is empty.
+
+### 4.3.3. How to execute a FortiOS CLI via the FortiManager API?
+
+Caught in #1095838 (FortiOS 7.6.1).
+
+Starting with FortiOS 7.6.1, the FortiOS API supports executing any CLI commands using the `/api/v2/monitor/system/config-script/execute` endpoint. It means we can also levera it using the `sys/proxy/json` FortiManager API endpoint.
+
+The following example shows how to capture HTTPS traffic from all interface of the `dev_001` managed FortiGate in the `demo` ADOM:
+
+```
+REQUEST
+
+{
+ "id": 3,
+ "method": "exec",
+ "params": [
+ {
+ "data": {
+ "action": "post",
+ "payload": [
+ "config vdom",
+ "edit root",
+ "diagnose sniffer packet any \"port 443\" 4 3"
+ ],
+ "resource": "/api/v2/monitor/system/config-script/execute",
+ "target": [
+ "adom/demo/device/dev_001"
+ ]
+ },
+ "url": "/sys/proxy/json"
+ }
+ ],
+ "session": "{{session}}"
+}
+```
+
+> **Note:**
+
+The ending parameters of the `diagnose sniffer packet` command are `4 3`. Here, `4` is the verbosity level, which exposes the packet headers and the interface name, while `3` specifies the number of packets to capture.
+
+```
+RESPONSE
+
+{
+ "id": 3,
+ "result": [
+ {
+ "data": [
+ {
+ "response": {
+ "action": "execute",
+ "build": 3510,
+ "http_method": "POST",
+ "name": "config-script",
+ "path": "system",
+ "results": {
+ "console": [
+ "br_01 config vdom",
+ "br_01 (vdom) edit root",
+ "current vf=root:0",
+ "br_01 (root) diagnose sniffer packet any \"port 443\" 4 3",
+ "{\"time\":0.04507,\"hdr\":\"1MOyoQIABAAAAAAAAAAAAEAGAABxAAAA\"}",
+ "{\"time\":20.257795,\"pkt\":[\"lDemaGJZCwBMAAAATAAAAA==\"],\"if\":{\"out\":\"port1\"},\"ip\":{\"proto\":6,\"src\":\"10.210.34.77\",\"dst\":\"209.40.117.130\"},\"tcp\":{\"sport\":22124,\"dport\":443,\"flags\":[\"syn\"],\"len\":0,\"seq\":681523272,\"csum\":5490,\"win\":4210}}",
+ "{\"time\":21.314103,\"pkt\":[\"lTemaFY1DABMAAAATAAAAA==\"],\"if\":{\"out\":\"port1\"},\"ip\":{\"proto\":6,\"src\":\"10.210.34.77\",\"dst\":\"209.40.117.130\"},\"tcp\":{\"sport\":22124,\"dport\":443,\"flags\":[\"syn\"],\"len\":0,\"seq\":681523272,\"csum\":62829,\"win\":4210}}",
+ "{\"time\":23.394127,\"pkt\":[\"lzemaO5tDQBMAAAATAAAAA==\"],\"if\":{\"out\":\"port1\"},\"ip\":{\"proto\":6,\"src\":\"10.210.34.77\",\"dst\":\"209.40.117.130\"},\"tcp\":{\"sport\":22124,\"dport\":443,\"flags\":[\"syn\"],\"len\":0,\"seq\":681523272,\"csum\":54629,\"win\":4210}}"
+ ]
+ },
+ "serial": "FGVMMLREDACTED64",
+ "status": "success",
+ "vdom": "root",
+ "version": "v7.6.3"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "fgt-763"
+ }
+ ],
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "url": "/sys/proxy/json"
+ }
+ ]
+}
+```
+
+Asynchronous API calls with /sys/proxy/json+++++++++++++++++++++++++++++++++++++++++++
+
+Starting with FortiManager 8.0.1 (#1284848), the FortiManager JSON RPC API supports asynchronous calls. It means that we can send a request to the FortiManager and get an immediate response, while the actual processing of the request is done in the background. This is particularly useful for long-running operations, such as executing CLI commands or retrieving large amounts of data from managed devices.
+
+The following example shows how to retrieve the status of the `dev_001` to `dev_003` managed devices in the `demo` ADOM:
+
+```
+REQUEST
+
+{
+ "id": 1,
+ "method": "exec",
+ "params": [
+ {
+ "url": "/sys/proxy/json",
+ "data": {
+ "target": [
+ "adom/demo/device/dev_001",
+ "adom/demo/device/dev_002",
+ "adom/demo/device/dev_003"
+ ],
+ "action": "get",
+ "resource": "/api/v2/monitor/system/status",
+ "flags": [
+ "create_task",
+ "nonblocking"
+ ]
+ }
+ }
+ ],
+ "session": "{{session}}",
+ "verbose": 1
+}
+
+RESPONSE
+
+{
+ "cid": 13,
+ "id": 1,
+ "result": [
+ {
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "taskid": 30,
+ "url": "/sys/proxy/json"
+ }
+ ]
+}
+```
+
+Once the returned `taskid` (`30` in the response above) is completed, you can retrieve the results of the asynchronous operation by sending a follow-up request to the FortiManager JSON RPC API with the `taskid`:
+
+```
+REQUEST
+
+{
+ "id": 1,
+ "method": "exec",
+ "params": [
+ {
+ "url": "/sys/task/result",
+ "data": {
+ "taskid": 30
+ }
+ }
+ ],
+ "session": "{{session}}",
+ "verbose": 1
+}
+
+RESPONSE
+
+{
+ "data": [
+ {
+ "response": {
+ "build": 167,
+ "http_method": "GET",
+ "name": "status",
+ "path": "system",
+ "results": {
+ "hostname": "FGVMSREDACTED856",
+ "log_disk_status": "available",
+ "model": "FGVM64",
+ "model_name": "FortiGate",
+ "model_number": "VM64"
+ },
+ "serial": "FGVMSREDACTED856",
+ "status": "success",
+ "vdom": "root",
+ "version": "v8.0.0"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "dev_001"
+ },
+ {
+ "response": {
+ "build": 167,
+ "http_method": "GET",
+ "name": "status",
+ "path": "system",
+ "results": {
+ "hostname": "FGVMSREDACTED858",
+ "log_disk_status": "available",
+ "model": "FGVM64",
+ "model_name": "FortiGate",
+ "model_number": "VM64"
+ },
+ "serial": "FGVMSREDACTED858",
+ "status": "success",
+ "vdom": "root",
+ "version": "v8.0.0"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "dev_002"
+ },
+ {
+ "response": {
+ "build": 167,
+ "http_method": "GET",
+ "name": "status",
+ "path": "system",
+ "results": {
+ "hostname": "FGVMSREDACTED854",
+ "log_disk_status": "available",
+ "model": "FGVM64",
+ "model_name": "FortiGate",
+ "model_number": "VM64"
+ },
+ "serial": "FGVMSREDACTED854",
+ "status": "success",
+ "vdom": "root",
+ "version": "v8.0.0"
+ },
+ "status": {
+ "code": 0,
+ "message": "OK"
+ },
+ "target": "dev_003"
+ }
+ ],
+ "taskid": 30,
+ "url": "/sys/proxy/json"
+}
+```

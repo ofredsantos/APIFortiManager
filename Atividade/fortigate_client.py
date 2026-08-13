@@ -38,6 +38,38 @@ if hasattr(sys.stdout, "reconfigure"):
         pass
 
 
+def sanitize_fortigate_config(raw_text: str) -> str:
+    """
+    Sanitiza o arquivo de configuração exportado via SSH CLI para garantir importabilidade (.conf 100% válido):
+    1. Remove sequências ANSI de controle de terminal.
+    2. Remove marcações de paginação '--More--' e espaços associados.
+    3. Trunca qualquer prompt no início (ex: 'hostname # ') garantindo que a primeira linha inicie com #config-version= ou #conf_file_ver=.
+    4. Limpa prompts no final do arquivo.
+    """
+    if not raw_text:
+        return ""
+
+    # Remove sequências de escape ANSI de terminal (caso existam)
+    text = re.sub(r'\x1b\[[0-9;]*[a-zA-Z]', '', raw_text)
+
+    # Remove marcas de paginação --More-- e todos os espaços que as acompanham
+    text = re.sub(r'--More--\s*', '', text)
+
+    # Localiza o início oficial do cabeçalho de configuração do FortiOS (#config-version= ou #conf_file_ver=)
+    header_match = re.search(r'(#config-version=.*)', text)
+    if header_match:
+        text = text[header_match.start():]
+    else:
+        header_match2 = re.search(r'(#conf_file_ver=.*)', text)
+        if header_match2:
+            text = text[header_match2.start():]
+
+    # Remove qualquer prompt remanescente na última linha (ex: 'cl-fw-ama-DOM-111-Ar~ama # ')
+    text = re.sub(r'\n[a-zA-Z0-9_\-\~]+\s*#\s*$', '\n', text)
+
+    return text.strip() + "\n"
+
+
 class FortiGateAPIError(Exception):
     """Exceção personalizada para erros na REST API ou SSH do FortiGate."""
     pass
@@ -195,10 +227,18 @@ class FortiGateClient:
             except requests.RequestException as e:
                 raise FortiGateAPIError(f"Erro de rede ao baixar backup de {self.host}: {e}")
         elif self.auth_method == "ssh":
-            # Captura a configuração completa via CLI (show full-configuration)
-            config_text = self.execute_cli_cmd("show full-configuration")
+            # Desativa o modo de paginação CLI (--More--) antes de exportar a configuração
+            try:
+                self.execute_cli_cmd("config system console\nset output standard\nend")
+            except Exception:
+                pass
+
+            # Captura a configuração completa via CLI
+            raw_config = self.execute_cli_cmd("show full-configuration")
+            clean_config = sanitize_fortigate_config(raw_config)
+
             with open(filepath, "w", encoding="utf-8") as f:
-                f.write(config_text)
+                f.write(clean_config)
             return filepath
 
     def discover_wan_interfaces(self) -> Tuple[str, Optional[str]]:

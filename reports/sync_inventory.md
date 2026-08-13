@@ -1,7 +1,7 @@
 # Relatório Executivo de Sincronia de Firewalls
 
-**Data da Coleta:** 11/08/2026 às 15:15:40  
-**FortiManager Host:** `177.69.71.160`  
+**Data da Coleta:** 12/08/2026 às 18:43:35  
+**FortiManager Host:** `187.72.197.227`  
 
 ---
 
@@ -9,10 +9,10 @@
 
 | Métrica | Quantidade | Percentual |
 | :--- | :---: | :---: |
-| **Total de Dispositivos** | 41 | 100% |
-| 🟢 **Conectados (FGFM Up)** | 40 | 97.6% |
-| 🔴 **Desconectados (FGFM Down)** | 1 | 2.4% |
-| ✅ **In-Sync (Configuração Sincronizada)** | 40 | 97.6% |
+| **Total de Dispositivos** | 113 | 100% |
+| 🟢 **Conectados (FGFM Up)** | 113 | 100.0% |
+| 🔴 **Desconectados (FGFM Down)** | 0 | 0.0% |
+| ✅ **In-Sync (Configuração Sincronizada)** | 113 | 100.0% |
 | ❌ **Out-of-Sync (Configuração Divergente)** | 0 | 0.0% |
 
 ---
@@ -21,47 +21,119 @@
 
 | Dispositivo | ADOM | IP | Modelo | Versão | Conexão | Config Sync | Policy Package | Status Pacote |
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: | :--- | :---: |
-| `FG100ETK19003857` | `TECAR` | `168.194.248.44` | FortiGate-100E | v7.0.10 | 🔴 Down | ❓ outofsync | `N/A` | `⚪ N/A` |
-| `cl-fw-acg-tecar-go-11001` | `TECAR` | `45.163.106.105` | FortiGate-60F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-acg-tecar-go-11001` | `❓ Unknown` |
-| `cl-fw-aiu-tecar-pa-56001` | `TECAR` | `170.203.197.47` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-aiu-tecar-pa-56001` | `❓ Unknown` |
-| `cl-fw-ans-tecar-go-31001` | `TECAR` | `189.112.75.81` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-ans-tecar-go-31001` | `❓ Unknown` |
-| `cl-fw-ans-tecar-go-42001` | `TECAR` | `179.238.27.101` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-ans-tecar-go-42001` | `❓ Unknown` |
-| `cl-fw-bag-tecar-mt-12001` | `TECAR` | `177.66.164.65` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bag-tecar-mt-12001` | `❓ Unknown` |
-| `cl-fw-bhe-tecar-bh-15001` | `TECAR` | `189.39.34.161` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-tecar-bh-15001` | `❓ Unknown` |
-| `cl-fw-bhe-tecar-bh-16001` | `TECAR` | `177.69.9.249` | FortiGate-100F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-tecar-bh-16001` | `❓ Unknown` |
-| `cl-fw-bhe-tecar-bh-59001` | `TECAR` | `187.111.29.150` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-tecar-bh-59001` | `❓ Unknown` |
-| `cl-fw-bhe-tecar-mg-67001` | `TECAR` | `186.248.239.38` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-tecar-mg-67001` | `❓ Unknown` |
-| `cl-fw-bhe-tecar-mg-70001` | `TECAR` | `177.129.191.22` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-tecar-mg-70001` | `❓ Unknown` |
-| `cl-fw-bhe-tecar-mg-71001` | `TECAR` | `187.111.31.210` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-tecar-mg-71001` | `❓ Unknown` |
-| `cl-fw-blm-tecar-pa-05001` | `TECAR` | `148.227.79.10` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-blm-tecar-pa-05001` | `❓ Unknown` |
-| `cl-fw-blm-tecar-pa-52001` | `TECAR` | `179.86.16.122` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-blm-tecar-pa-52001` | `❓ Unknown` |
-| `cl-fw-blm-tecar-pa-53001` | `TECAR` | `74.244.223.247` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-blm-tecar-pa-53001` | `❓ Unknown` |
-| `cl-fw-blm-tecar-pa-64001` | `TECAR` | `179.63.134.243` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-blm-tecar-pa-64001` | `❓ Unknown` |
-| `cl-fw-bsa-tecar-df-01001` | `TECAR` | `85.113.92.146` | FortiGate-100F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bsa-tecar-df-01001` | `❓ Unknown` |
-| `cl-fw-bsa-tecar-df-02001` | `TECAR` | `177.87.51.182` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bsa-tecar-df-02001` | `❓ Unknown` |
-| `cl-fw-bsa-tecar-df-03001` | `TECAR` | `85.113.92.102` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bsa-tecar-df-03001` | `❓ Unknown` |
-| `cl-fw-bsa-tecar-df-19001` | `TECAR` | `85.113.92.154` | FortiGate-60F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bsa-tecar-df-19001` | `❓ Unknown` |
-| `cl-fw-bsa-tecar-df-41001` | `TECAR` | `45.230.85.144` | FortiGate-100F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bsa-tecar-df-41001` | `❓ Unknown` |
-| `cl-fw-bsa-tecar-df-43001` | `TECAR` | `85.113.93.54` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bsa-tecar-df-43001` | `❓ Unknown` |
-| `cl-fw-cem-tecar-mg-27001` | `TECAR` | `187.111.30.202` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-cem-tecar-mg-27001` | `❓ Unknown` |
-| `cl-fw-cem-tecar-mg-32001` | `TECAR` | `187.111.16.59` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-cem-tecar-mg-32001` | `❓ Unknown` |
-| `cl-fw-cpe-tecar-ms-49001` | `TECAR` | `186.211.175.11` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-cpe-tecar-ms-49001` | `❓ Unknown` |
-| `cl-fw-dvl-tecar-mg-38001` | `TECAR` | `189.112.232.21` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-dvl-tecar-mg-38001` | `❓ Unknown` |
-| `cl-fw-gna-tecar-go-09001` | `TECAR` | `189.112.118.170` | FortiGate-100F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-gna-tecar-go-09001` | `❓ Unknown` |
-| `cl-fw-gna-tecar-go-10001` | `TECAR` | `168.194.248.46` | FortiGate-60F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-gna-tecar-go-10001` | `❓ Unknown` |
-| `cl-fw-gna-tecar-go-18001` | `TECAR` | `177.223.42.0` | FortiGate-60F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-gna-tecar-go-18001` | `❓ Unknown` |
-| `cl-fw-gna-tecar-go-20001` | `TECAR` | `168.194.250.248` | FortiGate-70F | v7.0.12 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
-| `cl-fw-gna-tecar-go-21001` | `TECAR` | `187.72.91.129` | FortiGate-60F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-gna-tecar-go-21001` | `❓ Unknown` |
-| `cl-fw-iub-tecar-go-13001` | `TECAR` | `187.32.67.189` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-iub-tecar-go-13001` | `❓ Unknown` |
-| `cl-fw-oci-tecar` | `TECAR` | `136.248.65.187` | FortiGate-VM64-OPC | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-oci-tecar` | `❓ Unknown` |
-| `cl-fw-pmj-tecar-to-48001` | `TECAR` | `200.175.164.58` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-pmj-tecar-to-48001` | `❓ Unknown` |
-| `cl-fw-rvd-tecar-go-17001` | `TECAR` | `177.69.45.41` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-rvd-tecar-go-17001` | `❓ Unknown` |
-| `cl-fw-sdr-tecar-ba-51001` | `TECAR` | `187.44.181.138` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-sdr-tecar-ba-51001` | `❓ Unknown` |
-| `cl-fw-slb-tecar-go-63001` | `TECAR` | `200.108.170.130` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-slb-tecar-go-63001` | `❓ Unknown` |
-| `cl-fw-ssa-tecar-ba-57001` | `TECAR` | `200.195.236.217` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-ssa-tecar-ba-57001` | `❓ Unknown` |
-| `cl-fw-ssa-tecar-ba-65001` | `TECAR` | `170.231.30.13` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-ssa-tecar-ba-65001` | `❓ Unknown` |
-| `cl-fw-ula-tecar-dc-01` | `TECAR` | `186.237.192.68` | FortiGate-100F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-ula-tecar-dc-01` | `❓ Unknown` |
-| `cl-fw-ula-tecar-mg-30001` | `TECAR` | `201.62.54.185` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-ula-tecar-mg-30001` | `❓ Unknown` |
+| `cl-fw-afn-MartMinas-215` | `MART_MINAS` | `131.108.149.234` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ama-DOM-111-Araruama` | `DOM_ATACAREJO` | `187.72.59.197` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-111-Araruama` | `❓ Unknown` |
+| `cl-fw-arbu-DOM-131-Buzios` | `DOM_ATACAREJO` | `189.112.141.25` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-ari-MartMinas-221` | `MART_MINAS` | `187.72.18.41` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-arpo-MartMinas-218` | `MART_MINAS` | `187.72.47.77` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ars-DOM-104-Angra1` | `DOM_ATACAREJO` | `187.72.48.125` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-ars-DOM-104-Angra1` | `❓ Unknown` |
+| `cl-fw-ars-DOM-112-Angra2` | `DOM_ATACAREJO` | `187.32.232.221` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-112-Angra2` | `❓ Unknown` |
+| `cl-fw-axa-MartMinas-228` | `MART_MINAS` | `45.232.9.40` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-baik-MartMinas-273` | `MART_MINAS` | `181.189.91.75` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-bca-MartMinas-230` | `MART_MINAS` | `179.108.209.61` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-bdp-MartMinas-247` | `MART_MINAS` | `186.195.94.15` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-bero-DOM-123-Belford_Roxo` | `DOM_ATACAREJO` | `187.32.32.77` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-DomAtacarejo_Lojas` | `❓ Unknown` |
+| `cl-fw-bet-MartMinas-262` | `MART_MINAS` | `170.239.254.131` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-bet-MartMinas-271` | `MART_MINAS` | `45.71.89.65` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-bet-MartMinas-285` | `MART_MINAS` | `200.233.181.193` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-bet-MartMinas-285` | `🟡 Modified` |
+| `cl-fw-bet-MartMinas-287` | `MART_MINAS` | `177.69.218.5` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-bhe-MartMinas-251` | `MART_MINAS` | `187.32.95.225` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-bhe-MartMinas-263` | `MART_MINAS` | `187.72.31.161` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-bhe-MartMinas-283` | `MART_MINAS` | `187.32.129.253` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-bhe-MartMinas-286` | `MART_MINAS` | `131.255.113.100` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-bhe-marminas-LMN` | `MART_MINAS` | `170.80.64.248` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-marminas-LMN` | `🟡 Modified` |
+| `cl-fw-bhe-martminas-escr-a` | `MART_MINAS` | `187.58.219.118` | FortiGate-400F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bhe-martminas-escr-a` | `🟡 Modified` |
+| `cl-fw-bng-DOM-126-Bangu` | `DOM_ATACAREJO` | `200.222.61.214` | FortiGate-60E | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-bng-DOM-126-Bangu` | `❓ Unknown` |
+| `cl-fw-cem-MartMinas-202` | `MART_MINAS` | `187.72.137.89` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cem-MartMinas-211` | `MART_MINAS` | `187.32.48.185` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cem-MartMinas-235` | `MART_MINAS` | `187.1.177.231` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cem-MartMinas-CD` | `MART_MINAS` | `186.249.224.63` | FortiGate-100F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-cem-MartMinas-CD` | `🟡 Modified` |
+| `cl-fw-cet-MartMinas-281` | `MART_MINAS` | `187.72.189.181` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-cet-MartMinas-281` | `🟡 Modified` |
+| `cl-fw-cga-MartMinas-256` | `MART_MINAS` | `45.71.78.27` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cht-DOM-119-Ceasa` | `DOM_ATACAREJO` | `187.72.29.249` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-cht-DOM-119-Ceasa` | `❓ Unknown` |
+| `cl-fw-cng-MartMinas-257` | `MART_MINAS` | `177.69.196.9` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cnl-MartMinas-234` | `MART_MINAS` | `189.39.17.9` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cpo-MartMinas-248` | `MART_MINAS` | `201.16.195.9` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-cuv-MartMinas-267` | `MART_MINAS` | `187.32.145.9` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-dqx-DOM-109-Caxias1` | `DOM_ATACAREJO` | `168.205.182.111` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-109-Caxias1` | `❓ Unknown` |
+| `cl-fw-dvl-MartMinas-201` | `MART_MINAS` | `189.112.203.89` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-dvl-MartMinas-237` | `MART_MINAS` | `189.112.193.105` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-exm-MartMinas-264` | `MART_MINAS` | `187.60.152.92` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟢 Installed` |
+| `cl-fw-gvs-MartMinas-205` | `MART_MINAS` | `187.72.215.193` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ian-MartMinas-232` | `MART_MINAS` | `189.39.63.161` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-iba-MartMinas-239` | `MART_MINAS` | `177.91.117.182` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-iie-MartMinas-276` | `MART_MINAS` | `200.169.10.156` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-iua-MartMinas-214` | `MART_MINAS` | `45.231.162.186` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-jfa-MartMinas-206` | `MART_MINAS` | `187.16.187.162` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-jfa-MartMinas-253` | `MART_MINAS` | `189.112.228.145` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-jml-MartMinas-244` | `MART_MINAS` | `200.71.65.18` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-jnu-MartMinas-274` | `MART_MINAS` | `187.84.26.163` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-jpi-MartMinas-254` | `MART_MINAS` | `138.0.64.64` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-jua-MartMinas-250` | `MART_MINAS` | `201.140.211.95` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-lav-MartMinas-229` | `MART_MINAS` | `45.234.242.203` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ldp-MartMinas-255` | `MART_MINAS` | `187.32.151.25` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-lgt-MartMinas-279` | `MART_MINAS` | `200.169.2.197` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-mce-DOM-110-Macae` | `DOM_ATACAREJO` | `168.197.237.33` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-110-Macae` | `❓ Unknown` |
+| `cl-fw-mcl-MartMinas-219` | `MART_MINAS` | `177.69.250.57` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-mcl-MartMinas-259` | `MART_MINAS` | `187.44.4.238` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-mcl-MartMinas-260` | `MART_MINAS` | `138.99.189.133` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-moo-MartMinas-249` | `MART_MINAS` | `189.112.140.90` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-mrc-DOM-118-Marica` | `DOM_ATACAREJO` | `201.16.249.201` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-mrc-DOM-118-Marica` | `❓ Unknown` |
+| `cl-fw-nla-MartMinas-252` | `MART_MINAS` | `201.55.102.137` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-nri-DOM-107-Niteroi` | `DOM_ATACAREJO` | `138.99.135.9` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-107-Niteroi` | `❓ Unknown` |
+| `cl-fw-oci-MartMinas-A` | `MART_MINAS` | `144.22.171.225` | FortiGate-VM64-OPC | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-oci-martminas-dr` | `MART_MINAS` | `204.216.145.80` | FortiGate-VM64-OPC | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-oci-martminas-dr` | `❓ Unknown` |
+| `cl-fw-pcs-MartMinas-242` | `MART_MINAS` | `179.108.114.13` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-plo-MartMinas-280` | `MART_MINAS` | `45.181.186.3` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-pms-MartMinas-213` | `MART_MINAS` | `201.48.100.34` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-pms-MartMinas-245` | `MART_MINAS` | `187.32.128.209` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-prr-MartMinas-272` | `MART_MINAS` | `189.112.51.213` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-prs-MartMinas-226` | `MART_MINAS` | `179.109.160.98` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-psa-MartMinas-216` | `MART_MINAS` | `201.48.194.217` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-pso-MartMinas-231` | `MART_MINAS` | `191.53.144.17` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ptc-MartMinas-225` | `MART_MINAS` | `187.32.25.121` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-pts-DOM-130-Petropolis` | `DOM_ATACAREJO` | `45.239.25.208` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-ptu-MartMinas-224` | `MART_MINAS` | `189.112.248.137` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-rjo-DOM-101-Realengo` | `DOM_ATACAREJO` | `187.108.46.49` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-101-Realengo` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-102-Taquara` | `DOM_ATACAREJO` | `201.55.101.197` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-102-Taquara` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-106-Inhauma` | `DOM_ATACAREJO` | `187.32.148.73` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-106-Inhauma` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-113-SaoPedro` | `DOM_ATACAREJO` | `187.32.223.81` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-113-SaoPedro` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-114-CampoGran` | `DOM_ATACAREJO` | `179.108.126.101` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-114-CampoGran` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-115-Campos1` | `DOM_ATACAREJO` | `187.32.232.217` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-115-Campos1` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-117-Caxias2` | `DOM_ATACAREJO` | `187.32.58.221` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-117-Caxias2` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-120-Itaperuna` | `DOM_ATACAREJO` | `187.72.80.105` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-120-Itaperuna` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-121-Campos2` | `DOM_ATACAREJO` | `177.55.207.152` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-121-Campos2` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-124-mesquita` | `DOM_ATACAREJO` | `181.191.146.233` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-DomAtacarejo_Lojas` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-129-Iguacu` | `DOM_ATACAREJO` | `187.102.215.27` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-DomAtacarejo_Lojas` | `❓ Unknown` |
+| `cl-fw-rjo-DOM-RioCentro-MTZ` | `DOM_ATACAREJO` | `189.38.98.173` | FortiGate-100F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-RioCentro-MTZ` | `❓ Unknown` |
+| `cl-fw-rns-MartMinas-278` | `MART_MINAS` | `200.169.2.179` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-rsd-DOM-116-Resende` | `DOM_ATACAREJO` | `189.84.176.93` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rsd-DOM-116-Resende` | `❓ Unknown` |
+| `cl-fw-sba-MartMinas-277` | `MART_MINAS` | `200.169.2.195` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-sgo-DOM-127-Sao_Goncalo` | `DOM_ATACAREJO` | `189.80.254.61` | FortiGate-40F | v7.0.11 | 🟢 Up | ✅ In-Sync | `cl-fw-DomAtacarejo_Lojas` | `❓ Unknown` |
+| `cl-fw-sla-MartMinas-284` | `MART_MINAS` | `170.246.45.36` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-slu-MartMinas-204` | `MART_MINAS` | `138.117.255.33` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-slu-MartMinas-288` | `MART_MINAS` | `168.232.199.250` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-slu-MartMinas-288` | `🟡 Modified` |
+| `cl-fw-slu-MartMinas-289` | `MART_MINAS` | `168.232.199.253` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-slu-MartMinas-289` | `🟡 Modified` |
+| `cl-fw-smi-DOM-105-SJMeriti` | `DOM_ATACAREJO` | `187.72.125.57` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-105-SJMeriti` | `❓ Unknown` |
+| `cl-fw-snps-MartMinas-217` | `MART_MINAS` | `187.32.146.225` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-soe-MartMinas-241` | `MART_MINAS` | `177.69.237.73` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-spo-MartMinas-escritorio` | `MART_MINAS` | `189.112.164.226` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `N/A` | `⚪ N/A` |
+| `cl-fw-sta-MartMinas-209` | `MART_MINAS` | `189.112.194.249` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-tcs-MartMinas-227` | `MART_MINAS` | `177.85.138.53` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-tot-MartMinas-233` | `MART_MINAS` | `187.72.40.225` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-trl-DOM-108-Teresopolis` | `DOM_ATACAREJO` | `187.72.54.73` | FortiGate-40F | v7.0.10 | 🟢 Up | ✅ In-Sync | `cl-fw-rjo-DOM-108-Teresopolis` | `❓ Unknown` |
+| `cl-fw-tsp-MartMinas-258` | `MART_MINAS` | `187.32.48.41` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-uba-MartMinas-220` | `MART_MINAS` | `187.44.117.217` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ula-MartMinas-210` | `MART_MINAS` | `187.32.11.209` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ula-MartMinas-222` | `MART_MINAS` | `201.62.49.32` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ula-MartMinas-238` | `MART_MINAS` | `45.176.204.148` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ula-MartMinas-246` | `MART_MINAS` | `38.156.5.3` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-uni-MartMinas-240` | `MART_MINAS` | `201.48.231.57` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ura-MartMinas-207` | `MART_MINAS` | `177.86.36.193` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ura-MartMinas-223` | `MART_MINAS` | `181.233.44.159` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-ura-MartMinas-265` | `MART_MINAS` | `179.127.158.137` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-vga-MartMinas-236` | `MART_MINAS` | `189.112.88.9` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
+| `cl-fw-vpn-MartMinas-261` | `MART_MINAS` | `177.69.126.25` | FortiGate-40F | v7.0.13 | 🟢 Up | ✅ In-Sync | `cl-fw-MartMinas_Lojas` | `🟡 Modified` |
 
 ---
 

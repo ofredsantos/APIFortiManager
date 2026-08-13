@@ -27,34 +27,37 @@ def collect_zones(response: dict) -> RequirementStatus:
             ),
         )
 
-    soc_zone = [z for z in data if z.get("name", "").lower() == "soc"]
+    soc_zone = [
+        z for z in data 
+        if z.get("name", "").lower() in ("zn.mgmt", "soc", "mgmt")
+    ]
 
     if soc_zone:
         interfaces = soc_zone[0].get("interface", [])
-        if isinstance(interfaces, list) and len(interfaces) >= 2:
+        if isinstance(interfaces, list) and len(interfaces) >= 1:
             return RequirementStatus(
                 number=7,
-                name="Zone SOC",
+                name="Zone ZN.MGMT / SOC",
                 status="✅ OK",
                 current_config=(
-                    f"Zone 'SOC' encontrada com interfaces: {', '.join(interfaces)}"
+                    f"Zone '{soc_zone[0].get('name')}' encontrada com interfaces: {', '.join(interfaces)}"
                 ),
-                suggestion="Nenhuma ação necessária. Zone SOC já configurada.",
+                suggestion="Nenhuma ação necessária. Zone já configurada.",
             )
         else:
             return RequirementStatus(
                 number=7,
-                name="Zone SOC",
+                name="Zone ZN.MGMT / SOC",
                 status="⚠️ Parcial",
-                current_config=f"Zone 'SOC' existe mas sem interfaces associadas.",
-                suggestion="Associar os túneis IPsec à zone SOC.",
+                current_config=f"Zone '{soc_zone[0].get('name')}' existe mas sem interfaces associadas.",
+                suggestion="Associar as interfaces de túnel IPsec (VPN.MGMT.01/02) à zone.",
             )
     else:
         existing = ", ".join(z.get("name", "?") for z in data)
         return RequirementStatus(
             number=7,
-            name="Zone SOC",
+            name="Zone ZN.MGMT / SOC",
             status="❌ Ausente",
             current_config=f"Zones existentes: {existing}",
-            suggestion="Criar zone 'SOC' com os túneis IPsec associados.",
+            suggestion="Criar zone 'ZN.MGMT' com as interfaces de túnel associadas.",
         )

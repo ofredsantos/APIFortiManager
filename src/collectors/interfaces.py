@@ -73,7 +73,10 @@ def collect_tunnel_naming(response: dict) -> RequirementStatus:
         )
 
     tunnels = [i for i in data if i.get("type") == "tunnel"]
-    soc_tunnels = [t for t in tunnels if t["name"].startswith("to_soc_")]
+    soc_tunnels = [
+        t for t in tunnels 
+        if any(k in t.get("name", "").lower() for k in ("vpn.mgmt", "to_soc_"))
+    ]
 
     if not tunnels:
         return RequirementStatus(
@@ -81,16 +84,16 @@ def collect_tunnel_naming(response: dict) -> RequirementStatus:
             name="Nomenclatura de Túneis",
             status="❌ Ausente",
             current_config="Nenhuma interface túnel encontrada.",
-            suggestion="Criar túneis com nomenclatura padrão: to_soc_wan1, to_soc_wan2.",
+            suggestion="Criar túneis com nomenclatura padrão: VPN.MGMT.01 e VPN.MGMT.02.",
         )
 
-    if len(soc_tunnels) == len(tunnels) and len(soc_tunnels) >= 2:
+    if len(soc_tunnels) >= 1:
         names = ", ".join(t["name"] for t in soc_tunnels)
         return RequirementStatus(
             number=6,
             name="Nomenclatura de Túneis",
             status="✅ OK",
-            current_config=f"Túneis no padrão: {names}",
+            current_config=f"Túneis no padrão de gerência: {names}",
             suggestion="Nenhuma ação necessária. Nomenclatura já padronizada.",
         )
     else:
@@ -101,6 +104,6 @@ def collect_tunnel_naming(response: dict) -> RequirementStatus:
             status="❌ Ausente",
             current_config=f"Túneis atuais: {current}",
             suggestion=(
-                "Renomear túneis para o padrão: to_soc_wan1, to_soc_wan2."
+                "Renomear ou criar túneis para o padrão: VPN.MGMT.01 e VPN.MGMT.02."
             ),
         )

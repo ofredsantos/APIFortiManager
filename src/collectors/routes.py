@@ -24,43 +24,42 @@ def collect_routes(device_name: str, response: dict) -> RequirementStatus:
             ),
         )
 
-    # Filtra rotas que usam túneis SOC
-    def _device_contains_soc(route: dict) -> bool:
+    # Filtra rotas que usam túneis de gerência (VPN.MGMT / SOC) ou apontam para sub-redes Algar (198.19.*)
+    def _is_mgmt_route(route: dict) -> bool:
         device = route.get("device", "")
+        dst = str(route.get("dst", ""))
+        dev_str = ""
         if isinstance(device, list):
-            return any("soc" in d.lower() for d in device if isinstance(d, str))
-        return "soc" in str(device).lower()
+            dev_str = " ".join(str(d) for d in device).lower()
+        else:
+            dev_str = str(device).lower()
 
-    soc_routes = [r for r in data if _device_contains_soc(r)]
+        is_mgmt_dev = any(k in dev_str for k in ("vpn.mgmt", "soc", "mgmt"))
+        is_mgmt_dst = dst.startswith("198.19.") or "198.19." in dst
+        return is_mgmt_dev or is_mgmt_dst
 
-    if len(soc_routes) >= 2:
+    soc_routes = [r for r in data if _is_mgmt_route(r)]
+
+    if len(soc_routes) >= 1:
         routes_str = "\n".join(
-            f"  - {r['dst']} → {r['device']} (GW: {r.get('gateway', 'N/A')})"
+            f"  - {r.get('dst', 'N/A')} → {r.get('device', 'N/A')} (GW: {r.get('gateway', 'N/A')})"
             for r in soc_routes
         )
         return RequirementStatus(
             number=2,
             name="Rotas Estáticas",
             status="✅ OK",
-            current_config=f"{len(soc_routes)} rotas SOC encontradas:\n{routes_str}",
+            current_config=f"{len(soc_routes)} rotas de gerenciamento encontradas:\n{routes_str}",
             suggestion="Nenhuma ação necessária. Rotas estáticas já configuradas.",
-        )
-    elif len(soc_routes) == 1:
-        return RequirementStatus(
-            number=2,
-            name="Rotas Estáticas",
-            status="⚠️ Parcial",
-            current_config=f"Apenas 1 rota SOC encontrada: {soc_routes[0]['dst']}",
-            suggestion="Criar a segunda rota estática para o segundo túnel SOC.",
         )
     else:
         return RequirementStatus(
             number=2,
             name="Rotas Estáticas",
             status="❌ Ausente",
-            current_config="Nenhuma rota para túneis SOC encontrada.",
+            current_config="Nenhuma rota para túneis de gerência (VPN.MGMT) encontrada.",
             suggestion=(
-                "Criar rotas estáticas para as redes do SOC (ex: 10.10.0.0/16) "
-                "apontando para os túneis IPsec to_soc_wan1 e to_soc_wan2."
+                "Criar rotas estáticas para as redes de gerência (198.19.0.0/26 e 198.19.255.0/24) "
+                "apontando para os túneis VPN.MGMT.01 (priority 50) e VPN.MGMT.02 (priority 60)."
             ),
         )

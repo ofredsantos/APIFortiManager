@@ -27,16 +27,17 @@ def collect_user_groups(response: dict) -> RequirementStatus:
             ),
         )
 
-    # Procura grupos que usam RADIUS
     radius_groups = []
     for g in data:
+        name_lower = g.get("name", "").lower()
+        if "grp.socadmins" in name_lower or "soc" in name_lower:
+            radius_groups.append(g)
+            continue
         members = g.get("member", [])
         if isinstance(members, list):
             for m in members:
-                if isinstance(m, dict) and "radius" in m.get("name", "").lower():
-                    radius_groups.append(g)
-                    break
-                elif isinstance(m, str) and "radius" in m.lower():
+                m_str = str(m.get("name") if isinstance(m, dict) else m).lower()
+                if any(k in m_str for k in ("authenticatorfn01", "radius", "algar")):
                     radius_groups.append(g)
                     break
 
@@ -47,17 +48,17 @@ def collect_user_groups(response: dict) -> RequirementStatus:
         )
         return RequirementStatus(
             number=11,
-            name="User Groups RADIUS",
+            name="User Groups GRP.SOCAdmins",
             status="✅ OK",
-            current_config=f"Grupos RADIUS encontrados:\n{groups_str}",
+            current_config=f"Grupos de autenticação encontrados:\n{groups_str}",
             suggestion="Nenhuma ação necessária. User groups já configurados.",
         )
     else:
         existing = ", ".join(g.get("name", "?") for g in data)
         return RequirementStatus(
             number=11,
-            name="User Groups RADIUS",
+            name="User Groups GRP.SOCAdmins",
             status="❌ Ausente",
-            current_config=f"Grupos existentes (sem RADIUS): {existing}",
-            suggestion="Criar user group 'SOC_Admins' com membro 'SOC_RADIUS'.",
+            current_config=f"Grupos existentes: {existing}",
+            suggestion="Criar user group 'GRP.SOCAdmins' com membro 'authenticatorfn01.algar'.",
         )

@@ -29,13 +29,16 @@ def collect_radius(response: dict) -> RequirementStatus:
             ),
         )
 
-    # Procura por servidor RADIUS com nome relacionado ao SOC
-    soc_radius = [r for r in data if "soc" in r.get("name", "").lower()]
+    soc_radius = [
+        r for r in data 
+        if any(k in r.get("name", "").lower() for k in ("authenticatorfn01.algar", "algar", "soc"))
+        or r.get("server") == "198.19.255.10"
+    ]
 
     if soc_radius:
         radius_str = "\n".join(
-            f"  - {r['name']}: server={r.get('server', 'N/A')}, "
-            f"auth={r.get('auth-type', 'N/A')}"
+            f"  - {r.get('name', 'N/A')}: server={r.get('server', 'N/A')}, "
+            f"auth={r.get('auth-type', 'N/A')}, source-ip={r.get('source-ip', 'N/A')}"
             for r in soc_radius
         )
         return RequirementStatus(
@@ -52,5 +55,5 @@ def collect_radius(response: dict) -> RequirementStatus:
             name="Servidor RADIUS",
             status="❌ Ausente",
             current_config=f"Servidores RADIUS existentes: {existing}",
-            suggestion="Configurar servidor RADIUS do SOC para autenticação administrativa.",
+            suggestion="Configurar servidor RADIUS authenticatorfn01.algar (198.19.255.10) para autenticação administrativa.",
         )

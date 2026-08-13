@@ -3,8 +3,8 @@ Coletores para Requisitos 12 e 13: admintimeout e Sync Status
 """
 from src.models.device_inventory import RequirementStatus
 
-# Valor padrão do admintimeout conforme política Algar
-STANDARD_ADMINTIMEOUT = 480
+# Valor padrão do admintimeout conforme política Algar (Etapa 9 da baseline: 31 minutos)
+STANDARD_ADMINTIMEOUT = 31
 
 
 def collect_admintimeout(response: dict) -> RequirementStatus:
@@ -26,12 +26,12 @@ def collect_admintimeout(response: dict) -> RequirementStatus:
 
     current_timeout = data.get("admintimeout", 0)
 
-    if current_timeout == STANDARD_ADMINTIMEOUT:
+    if current_timeout == STANDARD_ADMINTIMEOUT or (0 < current_timeout <= 31):
         return RequirementStatus(
             number=12,
             name="admintimeout",
             status="✅ OK",
-            current_config=f"admintimeout = {current_timeout} minutos (padrão)",
+            current_config=f"admintimeout = {current_timeout} minutos (padrão Algar)",
             suggestion="Nenhuma ação necessária.",
         )
     else:
@@ -39,8 +39,7 @@ def collect_admintimeout(response: dict) -> RequirementStatus:
             number=12,
             name="admintimeout",
             status="❌ Ausente",
-            current_config=f"admintimeout = {current_timeout} minutos "
-                          f"(esperado: {STANDARD_ADMINTIMEOUT})",
+            current_config=f"admintimeout = {current_timeout} minutos (esperado: {STANDARD_ADMINTIMEOUT})",
             suggestion=(
                 f"Ajustar admintimeout para {STANDARD_ADMINTIMEOUT} minutos:\n"
                 "config system global\n"

@@ -24,33 +24,34 @@ def collect_policies(response: dict) -> RequirementStatus:
             ),
         )
 
-    soc_policies = [p for p in data if "soc" in p.get("name", "").lower()
-                    or "mgmt" in p.get("name", "").lower()]
+    soc_policies = [
+        p for p in data 
+        if any(k in p.get("name", "").lower() for k in ("mgmt-inbound", "mgmt", "soc"))
+    ]
 
     if soc_policies:
         policies_str = "\n".join(
-            f"  - ID {p['policyid']}: {p.get('name', 'N/A')} (action: {p.get('action', 'N/A')})"
+            f"  - ID {p.get('policyid', 'N/A')}: {p.get('name', 'N/A')} (action: {p.get('action', 'N/A')})"
             for p in soc_policies
         )
         return RequirementStatus(
             number=9,
-            name="Firewall Policies SOC",
+            name="Firewall Policy MGMT-INBOUND",
             status="✅ OK",
             current_config=f"Policies de gerenciamento encontradas:\n{policies_str}",
             suggestion="Nenhuma ação necessária. Policies já existem.",
         )
     else:
         existing = ", ".join(
-            f"ID {p['policyid']}: {p.get('name', 'N/A')}"
+            f"ID {p.get('policyid', 'N/A')}: {p.get('name', 'N/A')}"
             for p in data[:5]
         )
         return RequirementStatus(
             number=9,
-            name="Firewall Policies SOC",
+            name="Firewall Policy MGMT-INBOUND",
             status="❌ Ausente",
-            current_config=f"Policies existentes (sem SOC): {existing}",
+            current_config=f"Policies existentes: {existing}",
             suggestion=(
-                "Criar policy permitindo tráfego da zone SOC para o loopback_mgmt "
-                "e para as redes de gerenciamento."
+                "Criar policy MGMT-INBOUND permitindo tráfego da zone ZN.MGMT para a loopback mgmt.algar."
             ),
         )

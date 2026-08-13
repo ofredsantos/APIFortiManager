@@ -3,8 +3,8 @@ Coletor para Requisito 4: Contas Administrativas Padrão Algar
 """
 from src.models.device_inventory import RequirementStatus
 
-# Contas administrativas padrão esperadas
-STANDARD_ADMINS = {"algar_ops", "algar_soc"}
+# Contas administrativas padrão esperadas conforme baseline Algar
+EXPECTED_ADMINS = {"api_soc", "api_nava", "algar_soc", "algar_atv", "operacao_soc"}
 
 
 def collect_admin_users(response: dict) -> RequirementStatus:
@@ -22,33 +22,33 @@ def collect_admin_users(response: dict) -> RequirementStatus:
             status="❌ Ausente",
             current_config="Nenhum administrador encontrado.",
             suggestion=(
-                "Criar contas administrativas padrão: algar_ops (super_admin) "
-                "e algar_soc (read_only)."
+                "Criar contas administrativas padrão: api_soc, api_nava, algar_soc, algar_atv, operacao_soc."
             ),
         )
 
     existing_admins = {a.get("name", "") for a in data}
-    missing = STANDARD_ADMINS - existing_admins
+    found = EXPECTED_ADMINS.intersection(existing_admins)
 
-    if not missing:
+    if len(found) >= 3 or not (EXPECTED_ADMINS - existing_admins):
         admins_str = ", ".join(
             f"{a['name']} ({a.get('accprofile', 'N/A')})"
-            for a in data if a.get("name") in STANDARD_ADMINS
+            for a in data if a.get("name") in existing_admins
         )
+        status_flag = "✅ OK" if not (EXPECTED_ADMINS - existing_admins) else "⚠️ Parcial"
         return RequirementStatus(
             number=4,
             name="Contas Admin Padrão",
-            status="✅ OK",
-            current_config=f"Contas padrão encontradas: {admins_str}",
-            suggestion="Nenhuma ação necessária. Contas administrativas já existem.",
+            status=status_flag,
+            current_config=f"Contas encontradas: {admins_str}",
+            suggestion="Nenhuma ação crítica necessária." if status_flag == "✅ OK" else f"Criar contas faltantes: {', '.join(EXPECTED_ADMINS - existing_admins)}",
         )
     else:
-        missing_str = ", ".join(missing)
+        missing_str = ", ".join(EXPECTED_ADMINS - existing_admins)
         existing_str = ", ".join(existing_admins)
         return RequirementStatus(
             number=4,
             name="Contas Admin Padrão",
             status="❌ Ausente",
             current_config=f"Contas existentes: {existing_str}. Faltando: {missing_str}",
-            suggestion=f"Criar contas faltantes: {missing_str} conforme política de gerenciamento.",
+            suggestion=f"Criar contas faltantes: {missing_str} conforme política de gerenciamento Algar.",
         )

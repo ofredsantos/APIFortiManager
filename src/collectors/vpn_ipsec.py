@@ -26,8 +26,11 @@ def collect_vpn_ipsec(device_name: str, response: dict) -> RequirementStatus:
             ),
         )
 
-    # Filtra túneis que parecem ser para o SOC (nome contendo "soc")
-    soc_tunnels = [t for t in data if "soc" in t.get("name", "").lower()]
+    # Filtra túneis que parecem ser para o SOC/Algar (nome contendo "vpn.mgmt", "mgmt" ou "soc")
+    soc_tunnels = [
+        t for t in data 
+        if any(k in t.get("name", "").lower() for k in ("vpn.mgmt", "mgmt", "soc"))
+    ]
 
     if len(soc_tunnels) >= 2:
         names = ", ".join(t["name"] for t in soc_tunnels)
@@ -36,7 +39,7 @@ def collect_vpn_ipsec(device_name: str, response: dict) -> RequirementStatus:
             name="VPN IPsec (Túneis Dedicados)",
             status="✅ OK",
             current_config=(
-                f"{len(soc_tunnels)} túneis SOC encontrados: {names}\n"
+                f"{len(soc_tunnels)} túneis de gerenciamento encontrados: {names}\n"
                 + "\n".join(
                     f"  - {t['name']}: GW={t.get('remote-gw', 'N/A')}, "
                     f"Interface={t.get('interface', 'N/A')}"
@@ -50,19 +53,19 @@ def collect_vpn_ipsec(device_name: str, response: dict) -> RequirementStatus:
             number=1,
             name="VPN IPsec (Túneis Dedicados)",
             status="⚠️ Parcial",
-            current_config=f"Apenas 1 túnel SOC encontrado: {soc_tunnels[0]['name']}",
-            suggestion="Criar o segundo túnel VPN IPsec para o segundo link WAN.",
+            current_config=f"Apenas 1 túnel de gerenciamento encontrado: {soc_tunnels[0]['name']}",
+            suggestion="Criar o segundo túnel VPN IPsec (VPN.MGMT.02) para o segundo link WAN.",
         )
     else:
-        # Existem túneis, mas nenhum com nome SOC
+        # Existem túneis, mas nenhum com padrão de gerência
         existing = ", ".join(t.get("name", "?") for t in data)
         return RequirementStatus(
             number=1,
             name="VPN IPsec (Túneis Dedicados)",
             status="❌ Ausente",
-            current_config=f"Túneis existentes (sem padrão SOC): {existing}",
+            current_config=f"Túneis existentes (sem padrão gerência): {existing}",
             suggestion=(
-                "Criar 2 túneis VPN IPsec dedicados para o SOC com nomenclatura "
-                "padrão: to_soc_wan1, to_soc_wan2."
+                "Criar os túneis VPN IPsec de gerenciamento com nomenclatura "
+                "padrão: VPN.MGMT.01 (e VPN.MGMT.02 se houver 2 uplinks)."
             ),
         )

@@ -26,34 +26,29 @@ def collect_addresses(response: dict) -> RequirementStatus:
             ),
         )
 
-    soc_addresses = [a for a in data if "soc" in a.get("name", "").lower()]
+    soc_addresses = [
+        a for a in data 
+        if any(k in a.get("name", "").lower() for k in ("mgmt.dc", "mgmt.spoke", "soc"))
+    ]
 
-    if len(soc_addresses) >= 2:
+    if len(soc_addresses) >= 1:
         addrs_str = "\n".join(
             f"  - {a['name']}: {a.get('subnet', 'N/A')}"
             for a in soc_addresses
         )
         return RequirementStatus(
             number=8,
-            name="Address Objects SOC",
+            name="Address Objects Gerenciamento",
             status="✅ OK",
-            current_config=f"Address objects SOC encontrados:\n{addrs_str}",
+            current_config=f"Address objects de gerenciamento encontrados:\n{addrs_str}",
             suggestion="Nenhuma ação necessária. Address objects já existem.",
-        )
-    elif len(soc_addresses) == 1:
-        return RequirementStatus(
-            number=8,
-            name="Address Objects SOC",
-            status="⚠️ Parcial",
-            current_config=f"Apenas 1 address SOC: {soc_addresses[0]['name']}",
-            suggestion="Criar address objects adicionais para a infraestrutura do SOC.",
         )
     else:
         existing = ", ".join(a.get("name", "?") for a in data[:5])
         return RequirementStatus(
             number=8,
-            name="Address Objects SOC",
+            name="Address Objects Gerenciamento",
             status="❌ Ausente",
-            current_config=f"Addresses existentes (sem SOC): {existing}",
-            suggestion="Criar address objects para comunicação com o SOC.",
+            current_config=f"Addresses existentes: {existing}",
+            suggestion="Criar os objetos de endereço: MGMT.DC (198.19.0.0/26), MGMT.DC-2 (198.19.255.0/24) e MGMT.SPOKE.",
         )
